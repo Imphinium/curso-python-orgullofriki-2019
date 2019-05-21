@@ -30,7 +30,7 @@ def main():
 
 	sprite, rect = load_png("python_30.png")
 	sprite_xy = x, y = size[0] / 2 - rect.w / 2, size[1] / 2 - rect.h / 2
-	rect = rect.move(sprite_xy)
+	rect.move_ip(sprite_xy)
 
 	while True:
 		clock.tick(framerate)
@@ -38,11 +38,21 @@ def main():
 		for event in pg.event.get():
 			if event.type == QUIT:
 				sys.exit(0)
+			elif event.type == KEYDOWN:
+				print(f"{event.key}")
+				if event.key == 97:
+					rect.move_ip((-1,0))
+				elif event.key == 119:
+					rect.move_ip((0,1))
+				elif event.key == 100:
+					rect.move_ip((1,0))
+				elif event.key == 115:
+					rect.move_ip((0,-1))
 		# Actualizar estados de juego
 
 		# Pintar
 		screen.blit(background, (0,0))
-		screen.blit(sprite, rect)
+		screen.blit(sprite, rect, rect)
 
 		pg.display.flip()
 
