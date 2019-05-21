@@ -20,6 +20,17 @@ def load_png(name):
         raise SystemExit
     return image, image.get_rect()
 
+class Apple(pg.sprite.Sprite):
+	def __init__(self, *args, **kwargs):
+		pg.sprite.Sprite.__init__(self)
+		self.image, self.rect = load_png("python_30.png")
+
+		sprite_xy = x, y = size[0] / 2 - self.rect.w / 2, size[1] / 2 - self.rect.h / 2
+		self.rect.move_ip(sprite_xy)
+
+	def move_ip(self, coords):
+		self.rect.move_ip(coords)
+
 def main():
 	screen = pg.display.set_mode(size)
 	clock = pg.time.Clock()
@@ -28,9 +39,10 @@ def main():
 	background = background.convert()
 	background.fill((180, 30, 70))
 
-	sprite, rect = load_png("python_30.png")
-	sprite_xy = x, y = size[0] / 2 - rect.w / 2, size[1] / 2 - rect.h / 2
-	rect.move_ip(sprite_xy)
+	apple_sprite = Apple()
+	apple_group = pg.sprite.Group(apple_sprite)
+
+
 
 	while True:
 		clock.tick(framerate)
@@ -41,18 +53,18 @@ def main():
 			elif event.type == KEYDOWN:
 				print(f"{event.key}")
 				if event.key == 97:
-					rect.move_ip((-1,0))
+					apple_sprite.move_ip((-1,0))
 				elif event.key == 119:
-					rect.move_ip((0,1))
+					apple_sprite.move_ip((0,1))
 				elif event.key == 100:
-					rect.move_ip((1,0))
+					apple_sprite.move_ip((1,0))
 				elif event.key == 115:
-					rect.move_ip((0,-1))
+					apple_sprite.move_ip((0,-1))
 		# Actualizar estados de juego
 
 		# Pintar
 		screen.blit(background, (0,0))
-		screen.blit(sprite, rect, rect)
+		apple_group.draw(screen)
 
 		pg.display.flip()
 
