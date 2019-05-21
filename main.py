@@ -4,7 +4,7 @@ import pygame as pg
 from pygame.locals import *
 
 size = H, W = 680, 400
-framerate = 60
+framerate = 10
 
 def load_png(name):
     """ Load image and return image object"""
@@ -29,6 +29,8 @@ def main():
 	background.fill((180, 30, 70))
 
 	sprite, rect = load_png("python_30.png")
+	sprite_xy = x, y = size[0] / 2 - rect.w / 2, size[1] / 2 - rect.h / 2
+	rect = rect.move(sprite_xy)
 
 	while True:
 		clock.tick(framerate)
@@ -36,11 +38,12 @@ def main():
 		for event in pg.event.get():
 			if event.type == QUIT:
 				sys.exit(0)
-		# Actulizar estados de juego
+		# Actualizar estados de juego
 
 		# Pintar
 		screen.blit(background, (0,0))
-		screen.blit(sprite, (10, 10))
+		screen.blit(sprite, rect)
+
 		pg.display.flip()
 
 if __name__ == "__main__":
