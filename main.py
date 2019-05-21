@@ -8,14 +8,14 @@ framerate = 60
 
 def load_png(name):
     """ Load image and return image object"""
-    fullname = os.path.join('data', name)
+    fullname = os.path.join('assets', name)
     try:
-        image = pygame.image.load(fullname)
+        image = pg.image.load(fullname)
         if image.get_alpha is None:
             image = image.convert()
         else:
             image = image.convert_alpha()
-    except pygame.error:
+    except pg.error:
         print(f"Cannot load image: {fullname}")
         raise SystemExit
     return image, image.get_rect()
@@ -28,6 +28,8 @@ def main():
 	background = background.convert()
 	background.fill((180, 30, 70))
 
+	sprite, rect = load_png("python_30.png")
+
 	while True:
 		clock.tick(framerate)
 		# Escuchar eventos
@@ -38,6 +40,7 @@ def main():
 
 		# Pintar
 		screen.blit(background, (0,0))
+		screen.blit(sprite, (10, 10))
 		pg.display.flip()
 
 if __name__ == "__main__":
