@@ -1,10 +1,11 @@
 import sys
 import os
+import random
 import pygame as pg
 from pygame.locals import *
 
 size = H, W = 680, 400
-framerate = 10
+framerate = 1
 
 def load_png(name):
     """ Load image and return image object"""
@@ -28,8 +29,17 @@ class Apple(pg.sprite.Sprite):
 		sprite_xy = x, y = size[0] / 2 - self.rect.w / 2, size[1] / 2 - self.rect.h / 2
 		self.rect.move_ip(sprite_xy)
 
+	def update(self):
+		_pos = (random.randint(0, size[0]-self.rect.width),
+			random.randint(0, size[1]-self.rect.height))
+		self.move_abs(_pos)
+
 	def move_ip(self, coords):
 		self.rect.move_ip(coords)
+
+	def move_abs(self, coords):
+		self.rect.left = coords[0]
+		self.rect.top = coords[1]
 
 def main():
 	screen = pg.display.set_mode(size)
@@ -38,6 +48,8 @@ def main():
 	background = pg.Surface(size)
 	background = background.convert()
 	background.fill((180, 30, 70))
+
+	screen.blit(background, (0,0))
 
 	apple_sprite = Apple()
 	apple_group = pg.sprite.Group(apple_sprite)
@@ -61,9 +73,11 @@ def main():
 				elif event.key == 115:
 					apple_sprite.move_ip((0,-1))
 		# Actualizar estados de juego
+		
 
 		# Pintar
-		screen.blit(background, (0,0))
+		screen.blit(background, apple_sprite.rect, apple_sprite.rect)
+		apple_group.update()
 		apple_group.draw(screen)
 
 		pg.display.flip()
